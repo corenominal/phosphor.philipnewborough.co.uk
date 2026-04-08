@@ -118,7 +118,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1.5rem;
+  padding: 0;
   gap: 1rem;
 }
 
@@ -141,7 +141,7 @@ input:focus-visible {
   align-items: center;
   gap: 1.5rem;
   border-bottom: 1px solid var(--border-dim);
-  padding-bottom: 0.6rem;
+  padding: 1.5rem 1.5rem 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
@@ -198,7 +198,7 @@ input:focus-visible {
   background: var(--bg-panel);
   border: 1px solid var(--border-dim);
   padding: 0.8rem 1rem;
-  width: min(800px, 100%);
+  width: min(800px, calc(100% - 3rem));
 }
 
 .monitor-row {
@@ -260,7 +260,7 @@ input:focus-visible {
   background: var(--bg-panel);
   border: 1px solid var(--border-dim);
   padding: 1rem;
-  width: min(800px, 100%);
+  width: min(800px, calc(100% - 3rem));
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -409,7 +409,7 @@ input:focus-visible {
   display: flex;
   gap: 2rem;
   border-top: 1px solid var(--border-dim);
-  padding-top: 0.6rem;
+  padding: 0.6rem 1.5rem 1.5rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 0.68em;
