@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- [PHOSPHOR // BOOT SEQUENCE INIT] -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icon-16x16.png">
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Theme Colour -->
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="PHOSPHOR Entropy-Based Password Generator" />
+    <title>PHOSPHOR Password Generator</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://phosphor.philipnewborough.co.uk" />
+    <meta property="og:title" content="PHOSPHOR Password Generator" />
+    <meta property="og:description" content="PHOSPHOR Entropy-Based Password Generator" />
+    <meta property="og:image" content="https://phosphor.philipnewborough.co.uk/img/og-phosphor-1200x630.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <link rel="stylesheet" href="css/style.css?v=1775660659928" />
+</head>
+<body>
+
+  <!-- [ENTROPY FIELD :: PRIMARY DISPLAY SURFACE] -->
+  <canvas id="entropyCanvas" aria-label="Entropy capture field. Move pointer to generate thermal data."></canvas>
+
+  <!-- [SCANLINE OVERLAY :: CRT SIMULATION LAYER] -->
+  <div id="scanlineOverlay" aria-hidden="true"></div>
+
+  <!-- [TERMINAL OVERLAY :: CIPHER OUTPUT INTERFACE] -->
+  <div id="terminalOverlay" role="main">
+
+    <header id="systemHeader">
+      <span class="sys-label">PHOSPHOR</span>
+      <span class="sys-version">v0.1.0 // ENTROPY ENGINE ONLINE</span>
+      <div class="header-controls">
+        <span id="systemClock" class="sys-label" aria-live="polite"></span>
+        <button id="settingsBtn" aria-label="Open system configuration">[SYS CONFIG]</button>
+      </div>
+    </header>
+
+    <section id="entropyMonitor" aria-label="Entropy level monitor">
+      <div class="monitor-row">
+        <span class="label">THERMAL FLUX</span>
+        <div id="entropyBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div id="entropyFill"></div>
+        </div>
+        <span id="entropyPercent" class="value">0%</span>
+      </div>
+      <p id="entropyStatus" class="status-line blink" aria-live="polite">// AWAITING THERMAL INPUT — MOVE POINTER ACROSS FIELD</p>
+    </section>
+
+    <section id="cipherForge" aria-label="Cipher forge output" class="locked">
+      <div class="forge-label">CIPHER OUTPUT</div>
+      <div id="cipherDisplay" aria-live="assertive" aria-atomic="true">[ INSUFFICIENT ENTROPY ]</div>
+      <div class="forge-actions">
+        <button id="forgeBtn" disabled aria-disabled="true">FORGE CIPHER</button>
+        <button id="copyBtn" disabled aria-disabled="true" aria-label="Copy cipher to clipboard">COPY</button>
+        <button id="resetBtn" disabled aria-disabled="true">PURGE &amp; RESET</button>
+      </div>
+    </section>
+
+    <footer id="systemFooter">
+      <span class="sys-label">POOL:<span id="poolCount">0</span></span>
+      <span class="sys-label">STATUS: <span id="systemStatus" class="status-ok">NOMINAL</span></span>
+    </footer>
+
+  </div>
+
+  <!-- [WELCOME MODAL :: SYSTEM OVERVIEW INTERFACE] -->
+  <div id="welcomeModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+    <div class="modal-panel modal-panel--wide">
+      <header class="modal-header">
+        <span id="welcomeTitle" class="modal-title">PHOSPHOR // SYSTEM OVERVIEW</span>
+        <button id="welcomeClose" class="modal-close" aria-label="Close overview">&times;</button>
+      </header>
+      <div class="modal-body">
+
+        <div class="welcome-section">
+          <p class="welcome-text">Phosphor generates strong, random passwords using the movements of your mouse or finger — not a predictable algorithm. The more you move, the more randomness is collected.</p>
+          <ol class="welcome-steps">
+            <li><strong>COLLECT RANDOMNESS</strong> &mdash; Move your pointer around the glowing field. The <strong>THERMAL FLUX</strong> bar shows how much has been gathered.</li>
+            <li><strong>FORGE YOUR PASSWORD</strong> &mdash; Once the bar is full, click <strong>FORGE CIPHER</strong> to generate a password from your collected randomness.</li>
+            <li><strong>COPY AND CLEAR</strong> &mdash; Use the <strong>COPY</strong> button, then <strong>PURGE &amp; RESET</strong> to wipe all trace data from memory.</li>
+          </ol>
+          <p class="welcome-note">// Your password is created entirely inside your browser. Nothing is stored on a server or sent anywhere.</p>
+        </div>
+
+        <div id="technicalPanel" class="welcome-technical" hidden>
+          <div class="setting-label">TECHNICAL DETAIL</div>
+          <ul class="welcome-tech-list">
+            <li>Your pointer coordinates (x, y) and timestamps are sampled continuously into an entropy pool (<code>Uint8Array</code>).</li>
+            <li>The pool is digested using <strong>SHA-256</strong> via the browser&rsquo;s built-in <code>window.crypto.subtle</code> API.</li>
+            <li>The resulting hash bytes are mapped to your chosen character classes using modular arithmetic to construct the final cipher.</li>
+            <li>All operations are performed locally. No external libraries or network requests are used at any point.</li>
+          </ul>
+        </div>
+
+      </div>
+      <footer class="modal-footer welcome-footer">
+        <button id="technicalToggleBtn" class="btn-ghost">[TECHNICAL DETAIL]</button>
+        <div class="welcome-footer-right">
+          <label class="toggle-item">
+            <input type="checkbox" id="hideWelcomeCheck" />
+            <span class="toggle-track"></span>
+            <span class="toggle-label">DON&rsquo;T SHOW AGAIN</span>
+          </label>
+          <button id="welcomeDismiss">UNDERSTOOD</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- [SETTINGS MODAL :: CIPHER CONFIGURATION INTERFACE] -->
+  <div id="settingsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-panel">
+      <header class="modal-header">
+        <span id="settingsTitle" class="modal-title">SYS CONFIG // CIPHER PARAMETERS</span>
+        <button id="settingsClose" class="modal-close" aria-label="Close settings">&times;</button>
+      </header>
+      <div class="modal-body">
+
+        <!-- Output Length -->
+        <div class="setting-row">
+          <label for="lengthSlider" class="setting-label">OUTPUT LENGTH</label>
+          <div class="setting-control">
+            <input type="range" id="lengthSlider" min="8" max="32" step="1" value="16" />
+            <span id="lengthDisplay" class="setting-value">16</span>
+            <span class="setting-unit">CHARS</span>
+          </div>
+        </div>
+
+        <!-- Character Classes -->
+        <div class="setting-row">
+          <span class="setting-label">CHARACTER CLASSES</span>
+          <div class="setting-toggles">
+            <label class="toggle-item">
+              <input type="checkbox" id="useUppercase" />
+              <span class="toggle-track"></span>
+              <span class="toggle-label">UPPERCASE &nbsp; A&ndash;Z</span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="useLowercase" />
+              <span class="toggle-track"></span>
+              <span class="toggle-label">LOWERCASE &nbsp; a&ndash;z</span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="useNumbers" />
+              <span class="toggle-track"></span>
+              <span class="toggle-label">NUMERALS &nbsp;&nbsp; 0&ndash;9</span>
+            </label>
+            <label class="toggle-item">
+              <input type="checkbox" id="useSymbols" />
+              <span class="toggle-track"></span>
+              <span class="toggle-label">SYMBOLS &nbsp;&nbsp;&nbsp; !@#$%^&amp;*</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Display Theme -->
+        <div class="setting-row">
+          <span class="setting-label">DISPLAY THEME</span>
+          <div class="theme-selector">
+            <label class="theme-option">
+              <input type="radio" name="themeSelect" id="themeGreen" value="green" />
+              <span class="theme-swatch theme-swatch--green">PHOSPHOR GREEN</span>
+            </label>
+            <label class="theme-option">
+              <input type="radio" name="themeSelect" id="themeOrange" value="orange" />
+              <span class="theme-swatch theme-swatch--orange">PHOSPHOR ORANGE</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Startup Behaviour -->
+        <div class="setting-row">
+          <span class="setting-label">STARTUP BEHAVIOUR</span>
+          <div class="setting-toggles">
+            <label class="toggle-item">
+              <input type="checkbox" id="showWelcomeOnStart" />
+              <span class="toggle-track"></span>
+              <span class="toggle-label">SHOW OVERVIEW ON STARTUP</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+      <footer class="modal-footer">
+        <span id="settingsWarning" class="setting-warning"></span>
+        <button id="settingsCancel">CANCEL</button>
+        <button id="settingsApply">APPLY CONFIG</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- [MODULE LOAD SEQUENCE] -->
+  <script src="js/settings.js?v=1775660659928"></script>
+  <script src="js/crypto.js?v=1775660659928"></script>
+  <script src="js/entropy.js?v=1775660659928"></script>
+  <!-- Service Worker registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then(registration => {
+          // When the page becomes visible again (e.g. PWA resumed from background),
+          // check for a newer SW so updates aren't missed between sessions.
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+              registration.update();
+            }
+          });
+        });
+      });
+      // When a new SW takes control (after an update), reload to get fresh assets.
+      // The firstSW guard prevents a reload on the very first install.
+      const firstSW = !navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!firstSW) {
+          window.location.reload();
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
