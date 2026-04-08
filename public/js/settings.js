@@ -68,6 +68,7 @@ const welcomeClose      = document.getElementById('welcomeClose');
 const welcomeDismiss    = document.getElementById('welcomeDismiss');
 const technicalToggleBtn = document.getElementById('technicalToggleBtn');
 const technicalPanel    = document.getElementById('technicalPanel');
+const basicPanel        = document.getElementById('basicPanel');
 const hideWelcomeCheck  = document.getElementById('hideWelcomeCheck');
 
 // [ABOUT MODAL DOM REFERENCES]
@@ -111,6 +112,7 @@ function applyTheme(theme) {
 function openWelcome() {
   hideWelcomeCheck.checked = cipherSettings.hideWelcome;
   technicalPanel.hidden = true;
+  basicPanel.hidden = false;
   technicalToggleBtn.textContent = '[TECHNICAL DETAIL]';
   welcomeModal.classList.add('is-open');
   welcomeDismiss.focus();
@@ -239,9 +241,10 @@ welcomeClose.addEventListener('click', closeWelcome);
 welcomeDismiss.addEventListener('click', closeWelcome);
 
 technicalToggleBtn.addEventListener('click', () => {
-  const isHidden = technicalPanel.hidden;
-  technicalPanel.hidden = !isHidden;
-  technicalToggleBtn.textContent = isHidden ? '[HIDE TECHNICAL]' : '[TECHNICAL DETAIL]';
+  const showTechnical = technicalPanel.hidden;
+  technicalPanel.hidden = !showTechnical;
+  basicPanel.hidden = showTechnical;
+  technicalToggleBtn.textContent = showTechnical ? '[BASIC OVERVIEW]' : '[TECHNICAL DETAIL]';
 });
 
 // Click outside panel to dismiss

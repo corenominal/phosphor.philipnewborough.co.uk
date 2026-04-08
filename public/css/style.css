@@ -829,6 +829,10 @@ body.theme-orange .toggle-item input:checked ~ .toggle-track {
   gap: 1rem;
 }
 
+.welcome-section[hidden] {
+  display: none;
+}
+
 .welcome-text {
   font-size: 0.78em;
   line-height: 1.7;
