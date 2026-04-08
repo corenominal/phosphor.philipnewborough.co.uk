@@ -180,6 +180,7 @@ function armForge() {
   forgeBtn.setAttribute('aria-disabled', 'false');
   systemStatus.textContent = 'FORGE ARMED';
   systemStatus.className   = 'status-ok';
+  document.getElementById('cipherDisplay').textContent = '// FORGE ARMED — AWAITING CIPHER REQUEST';
 }
 
 // ============================================================
