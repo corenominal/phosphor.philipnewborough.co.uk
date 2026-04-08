@@ -29,12 +29,12 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/png" />
-    <link rel="stylesheet" href="css/style.css?v=1775674129875" />
+    <link rel="stylesheet" href="css/style.css?v=1775675173815" />
 </head>
 <body>
 
   <!-- [ENTROPY FIELD :: PRIMARY DISPLAY SURFACE] -->
-  <canvas id="entropyCanvas" aria-label="Entropy capture field. Move pointer to generate thermal data."></canvas>
+  <canvas id="entropyCanvas" aria-label="Entropy collection area. Move your pointer to collect randomness."></canvas>
 
   <!-- [SCANLINE OVERLAY :: CRT SIMULATION LAYER] -->
   <div id="scanlineOverlay" aria-hidden="true"></div>
@@ -44,37 +44,37 @@
 
     <header id="systemHeader">
       <span class="sys-label">PHOSPHOR</span>
-      <span class="sys-version">v0.1.0 // ENTROPY ENGINE ONLINE</span>
+      <span class="sys-version">v0.1.0</span>
       <div class="header-controls">
         <span id="systemClock" class="sys-label" aria-live="polite"></span>
-        <button id="aboutBtn" aria-label="About Phosphor">[ABOUT]</button>
-        <button id="settingsBtn" aria-label="Open system configuration">[CONFIG]</button>
+        <button id="aboutBtn" aria-label="About Phosphor">ABOUT</button>
+        <button id="settingsBtn" aria-label="Open settings">SETTINGS</button>
       </div>
     </header>
 
     <section id="entropyMonitor" aria-label="Entropy level monitor">
       <div class="monitor-row">
-        <span class="label">THERMAL FLUX</span>
+        <span class="label">ENTROPY</span>
         <div id="entropyBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <div id="entropyFill"></div>
         </div>
         <span id="entropyPercent" class="value">0%</span>
       </div>
-      <p id="entropyStatus" class="status-line blink" aria-live="polite">// AWAITING THERMAL INPUT — MOVE POINTER ACROSS FIELD</p>
+      <p id="entropyStatus" class="status-line blink" aria-live="polite">// MOVE YOUR POINTER TO COLLECT ENTROPY</p>
     </section>
 
-    <section id="cipherForge" aria-label="Cipher forge output" class="locked">
-      <div class="forge-label">CIPHER OUTPUT</div>
-      <div id="cipherDisplay" aria-live="assertive" aria-atomic="true">INSUFFICIENT ENTROPY</div>
+    <section id="cipherForge" aria-label="Password output" class="locked">
+      <div class="forge-label">PASSWORD</div>
+      <div id="cipherDisplay" aria-live="assertive" aria-atomic="true">AWAITING ENTROPY</div>
       <div class="forge-actions">
-        <button id="forgeBtn" disabled aria-disabled="true">FORGE CIPHER</button>
-        <button id="copyBtn" disabled aria-disabled="true" aria-label="Copy cipher to clipboard">COPY</button>
-        <button id="resetBtn" disabled aria-disabled="true">PURGE &amp; RESET</button>
+        <button id="forgeBtn" disabled aria-disabled="true">GENERATE PASSWORD</button>
+        <button id="copyBtn" disabled aria-disabled="true" aria-label="Copy password to clipboard">COPY</button>
+        <button id="resetBtn" disabled aria-disabled="true">RESET</button>
       </div>
     </section>
 
     <footer id="systemFooter">
-      <span class="sys-label">POOL:<span id="poolCount">0</span></span>
+      <span class="sys-label">SAMPLES:<span id="poolCount">0</span></span>
       <span class="sys-label">STATUS: <span id="systemStatus" class="status-ok">NOMINAL</span></span>
     </footer>
 
@@ -84,7 +84,7 @@
   <div id="welcomeModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
     <div class="modal-panel modal-panel--wide">
       <header class="modal-header">
-        <span id="welcomeTitle" class="modal-title">PHOSPHOR // SYSTEM OVERVIEW</span>
+        <span id="welcomeTitle" class="modal-title">PHOSPHOR // OVERVIEW</span>
         <button id="welcomeClose" class="modal-close" aria-label="Close overview">&times;</button>
       </header>
       <div class="modal-body">
@@ -92,9 +92,9 @@
         <div class="welcome-section">
           <p class="welcome-text">Phosphor generates strong, random passwords using the movements of your mouse or finger — not a predictable algorithm. The more you move, the more randomness is collected.</p>
           <ol class="welcome-steps">
-            <li><strong>COLLECT RANDOMNESS</strong> &mdash; Move your pointer around the glowing field. The <strong>THERMAL FLUX</strong> bar shows how much has been gathered.</li>
-            <li><strong>FORGE YOUR PASSWORD</strong> &mdash; Once the bar is full, click <strong>FORGE CIPHER</strong> to generate a password from your collected randomness.</li>
-            <li><strong>COPY AND CLEAR</strong> &mdash; Use the <strong>COPY</strong> button, then <strong>PURGE &amp; RESET</strong> to wipe all trace data from memory.</li>
+            <li><strong>COLLECT ENTROPY</strong> &mdash; Move your pointer around the glowing field. The <strong>ENTROPY</strong> bar shows how much has been gathered.</li>
+            <li><strong>GENERATE YOUR PASSWORD</strong> &mdash; Once the bar is full, click <strong>GENERATE PASSWORD</strong> to create a password from your collected entropy.</li>
+            <li><strong>COPY AND CLEAR</strong> &mdash; Use the <strong>COPY</strong> button, then <strong>RESET</strong> to wipe all data from memory.</li>
           </ol>
           <p class="welcome-note">// Your password is created entirely inside your browser. Nothing is stored on a server or sent anywhere.</p>
         </div>
@@ -104,7 +104,7 @@
           <ul class="welcome-tech-list">
             <li>Your pointer coordinates (x, y) and timestamps are sampled continuously into an entropy pool (<code>Uint8Array</code>).</li>
             <li>The pool is digested using <strong>SHA-256</strong> via the browser&rsquo;s built-in <code>window.crypto.subtle</code> API.</li>
-            <li>The resulting hash bytes are mapped to your chosen character classes using modular arithmetic to construct the final cipher.</li>
+            <li>The resulting hash bytes are mapped to your chosen character classes using modular arithmetic to construct the final password.</li>
             <li>All operations are performed locally. No external libraries or network requests are used at any point.</li>
           </ul>
         </div>
@@ -128,7 +128,7 @@
   <div id="settingsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
     <div class="modal-panel">
       <header class="modal-header">
-        <span id="settingsTitle" class="modal-title">SYS CONFIG // CIPHER PARAMETERS</span>
+        <span id="settingsTitle" class="modal-title">SETTINGS // PASSWORD OPTIONS</span>
         <button id="settingsClose" class="modal-close" aria-label="Close settings">&times;</button>
       </header>
       <div class="modal-body">
@@ -201,7 +201,7 @@
       <footer class="modal-footer">
         <span id="settingsWarning" class="setting-warning"></span>
         <button id="settingsCancel">CANCEL</button>
-        <button id="settingsApply">APPLY CONFIG</button>
+        <button id="settingsApply">APPLY</button>
       </footer>
     </div>
   </div>
@@ -210,7 +210,7 @@
   <div id="aboutModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
     <div class="modal-panel modal-panel--about">
       <header class="modal-header">
-        <span id="aboutTitle" class="modal-title">PHOSPHOR // OPERATOR PROFILE</span>
+        <span id="aboutTitle" class="modal-title">PHOSPHOR // ABOUT</span>
         <button id="aboutClose" class="modal-close" aria-label="Close about">&times;</button>
       </header>
       <div class="modal-body about-body">
@@ -223,7 +223,7 @@
           </div>
           <div class="about-meta">
             <div class="about-ident">
-              <span class="about-ident-label">// OPERATOR</span>
+              <span class="about-ident-label">// AUTHOR</span>
               <span class="about-name">Philip Newborough</span>
             </div>
             <p class="about-bio">Web developer and tech enthusiast. When I&rsquo;m not coding, I can be found performing Grumpa duties, reading Warhammer 40,000 fiction, listening to tech podcasts or riding my bike.</p>
@@ -236,24 +236,24 @@
         </div>
 
         <div class="about-sys-block">
-          <div class="about-sys-row"><span class="about-sys-key">SYSTEM</span><span class="about-sys-val">PHOSPHOR ENTROPY ENGINE</span></div>
+          <div class="about-sys-row"><span class="about-sys-key">SYSTEM</span><span class="about-sys-val">PHOSPHOR</span></div>
           <div class="about-sys-row"><span class="about-sys-key">BUILD</span><span class="about-sys-val">VANILLA JS // NO DEPENDENCIES</span></div>
           <div class="about-sys-row"><span class="about-sys-key">CRYPTO</span><span class="about-sys-val">SHA-256 // WINDOW.CRYPTO.SUBTLE</span></div>
-          <div class="about-sys-row"><span class="about-sys-key">LICENCE</span><span class="about-sys-val">MIT</span></div>
+          <div class="about-sys-row"><span class="about-sys-key">LICENCE</span><span class="about-sys-val">AGPL</span></div>
         </div>
 
       </div>
       <footer class="modal-footer about-footer">
         <span class="about-footer-note">// ALL OPERATIONS ARE LOCAL. NO DATA LEAVES YOUR DEVICE.</span>
-        <button id="aboutDismiss">CLOSE DOSSIER</button>
+        <button id="aboutDismiss">CLOSE</button>
       </footer>
     </div>
   </div>
 
   <!-- [MODULE LOAD SEQUENCE] -->
-  <script src="js/settings.js?v=1775674129875"></script>
-  <script src="js/crypto.js?v=1775674129875"></script>
-  <script src="js/entropy.js?v=1775674129875"></script>
+  <script src="js/settings.js?v=1775675173815"></script>
+  <script src="js/crypto.js?v=1775675173815"></script>
+  <script src="js/entropy.js?v=1775675173815"></script>
   <script src="js/metrics.js?v=1775317593465"></script>
   <!-- Service Worker registration -->
   <script>

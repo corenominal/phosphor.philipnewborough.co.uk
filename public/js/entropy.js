@@ -10,6 +10,10 @@
  */
 
 // -- [SYSTEM CONSTANTS] --
+const IS_TOUCH_DEVICE        = window.matchMedia('(pointer: coarse)').matches;
+const PROMPT_COLLECT         = IS_TOUCH_DEVICE
+  ? '// MOVE YOUR FINGER TO COLLECT ENTROPY'
+  : '// MOVE YOUR POINTER TO COLLECT ENTROPY';
 const ENTROPY_THRESHOLD      = 90;   // % fill required to arm the forge
 const POOL_TARGET_SIZE       = 2000;  // samples needed for 100% entropy
 const THERMAL_DECAY_ALPHA    = 0.018; // per-frame fade opacity (heat dissipation rate)
@@ -157,15 +161,14 @@ function updateEntropyDisplay() {
     }
     entropyBar.classList.add('surge');
     document.body.classList.remove('low-power');
-    entropyStatus.textContent = '// THERMAL SATURATION ACHIEVED — FORGE ARMED';
+    entropyStatus.textContent = '// ENTROPY COLLECTED — READY TO GENERATE';
     entropyStatus.classList.remove('blink');
   } else if (entropyLevel > 10) {
     document.body.classList.remove('low-power');
-    entropyStatus.textContent = `// COLLECTING THERMAL DATA — ${entropyLevel}% SATURATION`;
+    entropyStatus.textContent = `// COLLECTING ENTROPY — ${entropyLevel}%`;
   } else {
     document.body.classList.add('low-power');
-    entropyStatus.textContent = '// AWAITING THERMAL INPUT — MOVE POINTER ACROSS FIELD';
-    entropyStatus.classList.add('blink');
+    entropyStatus.textContent = PROMPT_COLLECT;
     entropyBar.classList.remove('surge');
   }
 }
@@ -178,9 +181,9 @@ function armForge() {
   cipherForge.classList.replace('locked', 'armed');
   forgeBtn.disabled = false;
   forgeBtn.setAttribute('aria-disabled', 'false');
-  systemStatus.textContent = 'FORGE ARMED';
+  systemStatus.textContent = 'READY';
   systemStatus.className   = 'status-ok';
-  document.getElementById('cipherDisplay').textContent = '// FORGE ARMED — AWAITING CIPHER REQUEST';
+  document.getElementById('cipherDisplay').textContent = '// READY TO GENERATE';
 }
 
 // ============================================================
@@ -310,8 +313,8 @@ function animateCipherReveal(target, cipher) {
 forgeBtn.addEventListener('click', async () => {
   if (forgeBtn.disabled) return;
   forgeBtn.disabled = true;
-  forgeBtn.textContent = 'FORGING...';
-  systemStatus.textContent = 'CIPHER GEN';
+  forgeBtn.textContent = 'GENERATING...';
+  systemStatus.textContent = 'GENERATING';
   systemStatus.className   = 'status-warn';
 
   try {
@@ -320,15 +323,15 @@ forgeBtn.addEventListener('click', async () => {
     animateCipherReveal(document.getElementById('cipherDisplay'), cipher);
     copyBtn.disabled = false;
     copyBtn.setAttribute('aria-disabled', 'false');
-    systemStatus.textContent = 'CIPHER OK';
+    systemStatus.textContent = 'DONE';
     systemStatus.className   = 'status-ok';
   } catch (err) {
-    document.getElementById('cipherDisplay').textContent = '[ FORGE FAULT // SEE CONSOLE ]';
+    document.getElementById('cipherDisplay').textContent = '[ ERROR — SEE CONSOLE ]';
     systemStatus.textContent = 'FAULT';
     systemStatus.className   = 'status-alert';
     console.error('[PHOSPHOR // FORGE FAULT]', err);
   } finally {
-    forgeBtn.textContent = 'FORGE CIPHER';
+    forgeBtn.textContent = 'GENERATE PASSWORD';
     forgeBtn.disabled = false;
   }
 });
@@ -360,11 +363,10 @@ function resetSystem() {
 
   // [RESET FORGE]
   cipherForge.classList.replace('armed', 'locked');
-  document.getElementById('cipherDisplay').textContent = '[ INSUFFICIENT ENTROPY ]';
+  document.getElementById('cipherDisplay').textContent = 'AWAITING ENTROPY';
   forgeBtn.disabled = true;
   forgeBtn.setAttribute('aria-disabled', 'true');
-  forgeBtn.textContent = 'FORGE CIPHER';
-  copyBtn.disabled = true;
+  forgeBtn.textContent = 'GENERATE PASSWORD';
   copyBtn.setAttribute('aria-disabled', 'true');
   copyBtn.textContent = 'COPY';
   resetBtn.disabled = true;
@@ -374,7 +376,7 @@ function resetSystem() {
   poolCountEl.textContent  = '0';
   systemStatus.textContent = 'NOMINAL';
   systemStatus.className   = 'status-ok';
-  entropyStatus.textContent = '// AWAITING THERMAL INPUT — MOVE POINTER ACROSS FIELD';
+  entropyStatus.textContent = PROMPT_COLLECT;
   entropyStatus.classList.add('blink');
 
   document.body.classList.add('low-power');
@@ -425,3 +427,4 @@ window.addEventListener('resize', calibrateSurface);
 calibrateSurface();
 tickSystemClock();
 requestAnimationFrame(thermalDecayLoop);
+entropyStatus.textContent = PROMPT_COLLECT;
