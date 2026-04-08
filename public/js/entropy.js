@@ -379,6 +379,7 @@ function resetSystem() {
   forgeBtn.disabled = true;
   forgeBtn.setAttribute('aria-disabled', 'true');
   forgeBtn.textContent = 'GENERATE';
+  copyBtn.disabled = true;
   copyBtn.setAttribute('aria-disabled', 'true');
   copyBtn.textContent = 'COPY';
   resetBtn.disabled = true;
