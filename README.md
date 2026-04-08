@@ -2,6 +2,8 @@
 
 ![Phosor in action](public/img/phospor-in-action.gif)
 
+Live: [phosphor.philipnewborough.co.uk](https://phosphor.philipnewborough.co.uk)
+
 An entropy-based password generator PWA with a Cyberpunk/NASA-dashboard aesthetic. Passwords are generated entirely in-browser using pointer movement as a source of randomness — nothing is sent to a server or stored externally.
 
 ## How It Works
