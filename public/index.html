@@ -29,7 +29,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/png" />
-    <link rel="stylesheet" href="css/style.css?v=1775661977377" />
+    <link rel="stylesheet" href="css/style.css?v=1775663217098" />
 </head>
 <body>
 
@@ -47,7 +47,8 @@
       <span class="sys-version">v0.1.0 // ENTROPY ENGINE ONLINE</span>
       <div class="header-controls">
         <span id="systemClock" class="sys-label" aria-live="polite"></span>
-        <button id="settingsBtn" aria-label="Open system configuration">[SYS CONFIG]</button>
+        <button id="aboutBtn" aria-label="About Phosphor">[ABOUT]</button>
+        <button id="settingsBtn" aria-label="Open system configuration">[CONFIG]</button>
       </div>
     </header>
 
@@ -205,10 +206,54 @@
     </div>
   </div>
 
+  <!-- [ABOUT MODAL :: OPERATOR PROFILE INTERFACE] -->
+  <div id="aboutModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <div class="modal-panel modal-panel--about">
+      <header class="modal-header">
+        <span id="aboutTitle" class="modal-title">PHOSPHOR // OPERATOR PROFILE</span>
+        <button id="aboutClose" class="modal-close" aria-label="Close about">&times;</button>
+      </header>
+      <div class="modal-body about-body">
+
+        <div class="about-profile">
+          <div class="about-avatar-wrap">
+            <div class="about-avatar-ring"></div>
+            <img class="about-avatar" src="img/philip-newborough-yellow-512x512-rounded.png" alt="Philip Newborough" width="120" height="120" />
+            <div class="about-avatar-scan" aria-hidden="true"></div>
+          </div>
+          <div class="about-meta">
+            <div class="about-ident">
+              <span class="about-ident-label">// OPERATOR</span>
+              <span class="about-name">Philip Newborough</span>
+            </div>
+            <p class="about-bio">Web developer and tech enthusiast. When I&rsquo;m not coding, I can be found performing Grumpa duties, reading Warhammer 40,000 fiction, listening to tech podcasts or riding my bike.</p>
+            <a class="about-link" href="https://philipnewborough.co.uk" target="_blank" rel="noopener noreferrer">
+              <span class="about-link-prompt">&gt;_</span>
+              <span class="about-link-url">philipnewborough.co.uk</span>
+              <span class="about-link-arrow">&#8599;</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="about-sys-block">
+          <div class="about-sys-row"><span class="about-sys-key">SYSTEM</span><span class="about-sys-val">PHOSPHOR ENTROPY ENGINE</span></div>
+          <div class="about-sys-row"><span class="about-sys-key">BUILD</span><span class="about-sys-val">VANILLA JS // NO DEPENDENCIES</span></div>
+          <div class="about-sys-row"><span class="about-sys-key">CRYPTO</span><span class="about-sys-val">SHA-256 // WINDOW.CRYPTO.SUBTLE</span></div>
+          <div class="about-sys-row"><span class="about-sys-key">LICENCE</span><span class="about-sys-val">MIT</span></div>
+        </div>
+
+      </div>
+      <footer class="modal-footer about-footer">
+        <span class="about-footer-note">// ALL OPERATIONS ARE LOCAL. NO DATA LEAVES YOUR DEVICE.</span>
+        <button id="aboutDismiss">CLOSE DOSSIER</button>
+      </footer>
+    </div>
+  </div>
+
   <!-- [MODULE LOAD SEQUENCE] -->
-  <script src="js/settings.js?v=1775661977377"></script>
-  <script src="js/crypto.js?v=1775661977377"></script>
-  <script src="js/entropy.js?v=1775661977377"></script>
+  <script src="js/settings.js?v=1775663217098"></script>
+  <script src="js/crypto.js?v=1775663217098"></script>
+  <script src="js/entropy.js?v=1775663217098"></script>
   <script src="js/metrics.js?v=1775317593465"></script>
   <!-- Service Worker registration -->
   <script>

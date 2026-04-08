@@ -69,6 +69,12 @@ const technicalToggleBtn = document.getElementById('technicalToggleBtn');
 const technicalPanel    = document.getElementById('technicalPanel');
 const hideWelcomeCheck  = document.getElementById('hideWelcomeCheck');
 
+// [ABOUT MODAL DOM REFERENCES]
+const aboutModal   = document.getElementById('aboutModal');
+const aboutBtn     = document.getElementById('aboutBtn');
+const aboutClose   = document.getElementById('aboutClose');
+const aboutDismiss = document.getElementById('aboutDismiss');
+
 const checkboxIds = ['useUppercase', 'useLowercase', 'useNumbers', 'useSymbols'];
 
 // [BOOT: APPLY PERSISTED THEME]
@@ -240,10 +246,42 @@ welcomeModal.addEventListener('click', (e) => {
   if (e.target === welcomeModal) closeWelcome();
 });
 
+// ============================================================
+// SUBSYSTEM: ABOUT MODAL LIFECYCLE
+// ============================================================
+
+/**
+ * openAbout — Show the operator profile modal.
+ * [DOSSIER INTERFACE ACTIVATION]
+ */
+function openAbout() {
+  aboutModal.classList.add('is-open');
+  aboutDismiss.focus();
+}
+
+/**
+ * closeAbout — Hide the operator profile modal.
+ * [DOSSIER INTERFACE STANDBY]
+ */
+function closeAbout() {
+  aboutModal.classList.remove('is-open');
+  aboutBtn.focus();
+}
+
+// [ABOUT MODAL EVENT WIRING]
+aboutBtn.addEventListener('click', openAbout);
+aboutClose.addEventListener('click', closeAbout);
+aboutDismiss.addEventListener('click', closeAbout);
+
+aboutModal.addEventListener('click', (e) => {
+  if (e.target === aboutModal) closeAbout();
+});
+
 // Escape key to dismiss
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     if (settingsModal.classList.contains('is-open')) closeSettings();
     else if (welcomeModal.classList.contains('is-open')) closeWelcome();
+    else if (aboutModal.classList.contains('is-open')) closeAbout();
   }
 });
