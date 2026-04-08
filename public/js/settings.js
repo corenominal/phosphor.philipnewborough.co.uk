@@ -59,6 +59,7 @@ const lengthDisplay   = document.getElementById('lengthDisplay');
 const settingsWarning = document.getElementById('settingsWarning');
 const themeGreenRadio  = document.getElementById('themeGreen');
 const themeOrangeRadio = document.getElementById('themeOrange');
+const themePonyRadio   = document.getElementById('themePony');
 const showWelcomeOnStart = document.getElementById('showWelcomeOnStart');
 
 // [WELCOME MODAL DOM REFERENCES]
@@ -95,6 +96,7 @@ if (!cipherSettings.hideWelcome) {
  */
 function applyTheme(theme) {
   document.body.classList.toggle('theme-orange', theme === 'orange');
+  document.body.classList.toggle('theme-pony',   theme === 'pony');
 }
 
 // ============================================================
@@ -141,8 +143,9 @@ function openSettings() {
     document.getElementById(id).checked = cipherSettings[id];
   });
 
-  themeGreenRadio.checked       = cipherSettings.theme !== 'orange';
+  themeGreenRadio.checked       = cipherSettings.theme === 'green' || (cipherSettings.theme !== 'orange' && cipherSettings.theme !== 'pony');
   themeOrangeRadio.checked      = cipherSettings.theme === 'orange';
+  themePonyRadio.checked        = cipherSettings.theme === 'pony';
   showWelcomeOnStart.checked    = !cipherSettings.hideWelcome;
 
   settingsModal.classList.add('is-open');
@@ -184,7 +187,7 @@ function applySettings() {
   cipherSettings.useNumbers   = nm;
   cipherSettings.useSymbols   = sy;
   const prevTheme             = cipherSettings.theme;
-  cipherSettings.theme        = themeOrangeRadio.checked ? 'orange' : 'green';
+  cipherSettings.theme        = themePonyRadio.checked ? 'pony' : (themeOrangeRadio.checked ? 'orange' : 'green');
   cipherSettings.hideWelcome  = !showWelcomeOnStart.checked;
 
   applyTheme(cipherSettings.theme);

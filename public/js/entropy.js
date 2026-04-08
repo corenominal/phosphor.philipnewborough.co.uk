@@ -65,7 +65,7 @@ function calibrateSurface() {
   ctx.scale(dpr, dpr);
 
   // Re-flood with void after resize to prevent artefacts
-  ctx.fillStyle = '#000000';
+  ctx.fillStyle = document.body.classList.contains('theme-pony') ? '#fdf0ff' : '#000000';
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 }
 
@@ -81,7 +81,10 @@ function calibrateSurface() {
  */
 function thermalDecayLoop() {
   // [HEAT DISSIPATION PASS]
-  ctx.fillStyle = `rgba(0, 0, 0, ${THERMAL_DECAY_ALPHA})`;
+  const isPony = document.body.classList.contains('theme-pony');
+  ctx.fillStyle = isPony
+    ? `rgba(253, 240, 255, ${THERMAL_DECAY_ALPHA})`
+    : `rgba(0, 0, 0, ${THERMAL_DECAY_ALPHA})`;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
   requestAnimationFrame(thermalDecayLoop);
@@ -105,6 +108,15 @@ function renderThermalTrace(x, y) {
     gradient.addColorStop(0.3, 'rgba(200,  90,   0, 0.50)');
     gradient.addColorStop(0.7, 'rgba(120,  45,   0, 0.15)');
     gradient.addColorStop(1,   'rgba(  0,   0,   0, 0.00)');
+  } else if (document.body.classList.contains('theme-pony')) {
+    // Rainbow pony — hue rotates along a global cycle for variety ✦
+    const hue  = (performance.now() / 8) % 360;
+    const h2   = (hue + 120) % 360;
+    const h3   = (hue + 240) % 360;
+    gradient.addColorStop(0,   `hsla(${hue},  100%, 62%, 0.92)`);
+    gradient.addColorStop(0.3, `hsla(${h2},   90%, 58%, 0.55)`);
+    gradient.addColorStop(0.7, `hsla(${h3},   80%, 72%, 0.18)`);
+    gradient.addColorStop(1,   'rgba(255, 255, 255, 0.00)');
   } else {
     // Phosphor-green core → translucent halo
     gradient.addColorStop(0,   'rgba(0, 255, 65, 0.90)');
@@ -352,7 +364,7 @@ function resetSystem() {
   isPointerActive = false;
 
   // [WIPE CANVAS]
-  ctx.fillStyle = '#000000';
+  ctx.fillStyle = document.body.classList.contains('theme-pony') ? '#fdf0ff' : '#000000';
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
   // [RESET ENTROPY GAUGE]
