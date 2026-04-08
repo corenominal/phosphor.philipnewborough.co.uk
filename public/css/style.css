@@ -300,6 +300,19 @@ input:focus-visible {
   text-shadow: none;
 }
 
+/* -- [CIPHER REVEAL ANIMATION :: SCRAMBLE DECODE SEQUENCE] -- */
+#cipherDisplay.cipher-animating {
+  color: var(--phosphor-green);
+  text-shadow: 0 0 14px var(--phosphor-green-glow), 0 0 2px #fff;
+  animation: cipherFlicker 0.07s linear infinite;
+}
+
+@keyframes cipherFlicker {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
 /* -- [FORGE BUTTON] -- */
 .forge-actions {
   display: flex;

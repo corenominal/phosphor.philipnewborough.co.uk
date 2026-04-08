@@ -247,6 +247,62 @@ canvas.addEventListener('touchmove', (e) => {
 canvas.addEventListener('touchend', () => { isPointerActive = false; });
 
 // ============================================================
+// SUBSYSTEM: CIPHER REVEAL ANIMATION
+// ============================================================
+
+/**
+ * animateCipherReveal — Scramble-typewriter effect for the cipher output.
+ * Each character position cycles through noise before locking to its final value.
+ * [VISUAL OUTPUT MODULE :: THERMAL DECODE SEQUENCE]
+ *
+ * @param {HTMLElement} target - The element to write into.
+ * @param {string} cipher     - The final cipher string to reveal.
+ */
+function animateCipherReveal(target, cipher) {
+  const NOISE_CHARS  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+  const SCRAMBLE_FRAMES = 5;  // noise frames before each char locks in
+  const FRAME_MS        = 35; // ms per frame
+
+  let lockedCount = 0;
+  let frameCount  = 0;
+
+  target.classList.add('cipher-animating');
+
+  function randomChar() {
+    return NOISE_CHARS[Math.floor(Math.random() * NOISE_CHARS.length)];
+  }
+
+  function tick() {
+    if (lockedCount >= cipher.length) {
+      target.textContent = cipher;
+      target.classList.remove('cipher-animating');
+      return;
+    }
+
+    let display = cipher.slice(0, lockedCount);
+
+    if (frameCount < SCRAMBLE_FRAMES) {
+      display += randomChar();
+      frameCount++;
+    } else {
+      lockedCount++;
+      frameCount = 0;
+      display = cipher.slice(0, lockedCount);
+    }
+
+    // Fill remaining positions with noise
+    for (let i = display.length; i < cipher.length; i++) {
+      display += randomChar();
+    }
+
+    target.textContent = display;
+    setTimeout(tick, FRAME_MS);
+  }
+
+  tick();
+}
+
+// ============================================================
 // SUBSYSTEM: FORGE BUTTON
 // ============================================================
 
@@ -260,7 +316,7 @@ forgeBtn.addEventListener('click', async () => {
   try {
     // [DISPATCH TO CIPHER CORE]
     const cipher = await generateCipher(entropyPool);
-    document.getElementById('cipherDisplay').textContent = cipher;
+    animateCipherReveal(document.getElementById('cipherDisplay'), cipher);
     copyBtn.disabled = false;
     copyBtn.setAttribute('aria-disabled', 'false');
     systemStatus.textContent = 'CIPHER OK';
