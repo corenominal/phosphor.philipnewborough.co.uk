@@ -343,7 +343,7 @@ forgeBtn.addEventListener('click', async () => {
     systemStatus.className   = 'status-alert';
     console.error('[PHOSPHOR // FORGE FAULT]', err);
   } finally {
-    forgeBtn.textContent = 'GENERATE PASSWORD';
+    forgeBtn.textContent = 'GENERATE';
     forgeBtn.disabled = false;
   }
 });
@@ -378,7 +378,7 @@ function resetSystem() {
   document.getElementById('cipherDisplay').textContent = 'AWAITING ENTROPY';
   forgeBtn.disabled = true;
   forgeBtn.setAttribute('aria-disabled', 'true');
-  forgeBtn.textContent = 'GENERATE PASSWORD';
+  forgeBtn.textContent = 'GENERATE';
   copyBtn.setAttribute('aria-disabled', 'true');
   copyBtn.textContent = 'COPY';
   resetBtn.disabled = true;
