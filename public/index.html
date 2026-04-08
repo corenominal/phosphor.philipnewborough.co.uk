@@ -29,7 +29,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/png" />
-    <link rel="stylesheet" href="css/style.css?v=1775677626701" />
+    <link rel="stylesheet" href="css/style.css?v=1775677990780" />
 </head>
 <body>
 
@@ -67,7 +67,7 @@
       <div class="forge-label">PASSWORD</div>
       <div id="cipherDisplay" aria-live="assertive" aria-atomic="true">AWAITING ENTROPY</div>
       <div class="forge-actions">
-        <button id="forgeBtn" disabled aria-disabled="true">GENERATE PASSWORD</button>
+        <button id="forgeBtn" disabled aria-disabled="true">GENERATE</button>
         <button id="copyBtn" disabled aria-disabled="true" aria-label="Copy password to clipboard">COPY</button>
         <button id="resetBtn" disabled aria-disabled="true">RESET</button>
       </div>
@@ -93,7 +93,7 @@
           <p class="welcome-text">Phosphor generates strong, random passwords using the movements of your mouse or finger — not a predictable algorithm. The more you move, the more randomness is collected.</p>
           <ol class="welcome-steps">
             <li><strong>COLLECT ENTROPY</strong> &mdash; Move your pointer around the glowing field. The <strong>ENTROPY</strong> bar shows how much has been gathered.</li>
-            <li><strong>GENERATE YOUR PASSWORD</strong> &mdash; Once the bar is full, click <strong>GENERATE PASSWORD</strong> to create a password from your collected entropy.</li>
+            <li><strong>GENERATE YOUR PASSWORD</strong> &mdash; Once the bar is full, click <strong>GENERATE</strong> to create a password from your collected entropy.</li>
             <li><strong>COPY AND CLEAR</strong> &mdash; Use the <strong>COPY</strong> button, then <strong>RESET</strong> to wipe all data from memory.</li>
           </ol>
           <p class="welcome-note">// Your password is created entirely inside your browser. Nothing is stored on a server or sent anywhere.</p>
@@ -176,15 +176,15 @@
           <div class="theme-selector">
             <label class="theme-option">
               <input type="radio" name="themeSelect" id="themeGreen" value="green" />
-              <span class="theme-swatch theme-swatch--green">PHOSPHOR GREEN</span>
+              <span class="theme-swatch theme-swatch--green">GREEN</span>
             </label>
             <label class="theme-option">
               <input type="radio" name="themeSelect" id="themeOrange" value="orange" />
-              <span class="theme-swatch theme-swatch--orange">PHOSPHOR ORANGE</span>
+              <span class="theme-swatch theme-swatch--orange">ORANGE</span>
             </label>
             <label class="theme-option">
               <input type="radio" name="themeSelect" id="themePony" value="pony" />
-              <span class="theme-swatch theme-swatch--pony">MY LITTLE PONY</span>
+              <span class="theme-swatch theme-swatch--pony">PONY</span>
             </label>
           </div>
         </div>
@@ -255,9 +255,9 @@
   </div>
 
   <!-- [MODULE LOAD SEQUENCE] -->
-  <script src="js/settings.js?v=1775677626701"></script>
-  <script src="js/crypto.js?v=1775677626701"></script>
-  <script src="js/entropy.js?v=1775677626701"></script>
+  <script src="js/settings.js?v=1775677990780"></script>
+  <script src="js/crypto.js?v=1775677990780"></script>
+  <script src="js/entropy.js?v=1775677990780"></script>
   <script src="js/metrics.js?v=1775317593465"></script>
   <!-- Service Worker registration -->
   <script>

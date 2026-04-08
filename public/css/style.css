@@ -1849,3 +1849,18 @@ body.theme-pony #aboutBtn {
     background: rgba(255, 255, 255, 0.60);
   }
 }
+
+/* ============================================================
+   RESPONSIVE :: MOBILE FONT SCALING
+   [UPSCALE BASE FONT FOR SMALL VIEWPORTS]
+   ============================================================ */
+
+@media (max-width: 600px) {
+  :root {
+    --font-size-base: clamp(15px, 4vw, 18px);
+  }
+
+  #systemClock {
+    display: none;
+  }
+}

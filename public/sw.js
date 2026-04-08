@@ -2,17 +2,17 @@
 // To push an update to users: bump this version string (e.g. v1.1, v1.2 …),
 // then deploy.  The browser will install the new SW, delete the old cache,
 // and serve fresh assets on the next page load.
-const CACHE_NAME = 'phosphor-v1.17';
+const CACHE_NAME = 'phosphor-v1.19';
 
 // ─── Assets to pre-cache on install ───────────────────────────────────────────
 const ASSETS = [
     '/',
-    '/index.html?v=1775677626701',
+    '/index.html?v=1775677990780',
     '/manifest.json',
-    '/css/style.css?v=1775677626701',
-    '/js/settings.js?v=1775677626701',
-    '/js/crypto.js?v=1775677626701',
-    '/js/entropy.js?v=1775677626701',
+    '/css/style.css?v=1775677990780',
+    '/js/settings.js?v=1775677990780',
+    '/js/crypto.js?v=1775677990780',
+    '/js/entropy.js?v=1775677990780',
     '/apple-touch-icon.png',
     '/favicon.ico',
     '/icon-16x16.png',
