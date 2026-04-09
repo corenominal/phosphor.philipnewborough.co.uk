@@ -1635,7 +1635,8 @@ body.theme-pony .toggle-item input:checked ~ .toggle-track ~ .toggle-label {
 /* Buttons in modal footer */
 body.theme-pony #settingsApply,
 body.theme-pony #welcomeDismiss,
-body.theme-pony #aboutDismiss {
+body.theme-pony #aboutDismiss,
+body.theme-pony #entropyDataDismiss {
   border-color: rgba(214, 58, 249, 0.55);
   color: var(--phosphor-green);
   background: rgba(214, 58, 249, 0.06);
@@ -1644,7 +1645,8 @@ body.theme-pony #aboutDismiss {
 @media (hover: hover) {
   body.theme-pony #settingsApply:hover,
   body.theme-pony #welcomeDismiss:hover,
-  body.theme-pony #aboutDismiss:hover {
+  body.theme-pony #aboutDismiss:hover,
+  body.theme-pony #entropyDataDismiss:hover {
     background: rgba(214, 58, 249, 0.14);
     box-shadow: 0 0 12px rgba(214, 58, 249, 0.35);
   }
@@ -1866,5 +1868,173 @@ body.theme-pony #aboutBtn {
 
   #systemClock {
     display: none;
+  }
+}
+
+/* ============================================================
+   ENTROPY DATA MODAL :: POOL VISUALISATION INTERFACE
+   ============================================================ */
+
+#entropyDataBtn {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--border-dim);
+  color: var(--phosphor-green-dim);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+@media (hover: hover) {
+  #entropyDataBtn:hover {
+    border-color: var(--border-active);
+    color: var(--phosphor-green);
+    box-shadow: 0 0 6px var(--phosphor-green-glow);
+  }
+}
+
+.modal-panel--entropy {
+  width: min(640px, 95vw);
+}
+
+.entropy-modal-body {
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* -- Stats grid -- */
+.entropy-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .entropy-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.entropy-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  background: rgba(0, 255, 65, 0.03);
+  border: 1px solid var(--border-dim);
+  padding: 0.4rem 0.6rem;
+}
+
+.entropy-stat-key {
+  font-size: 0.55em;
+  letter-spacing: 0.12em;
+  color: var(--phosphor-green-dim);
+  text-transform: uppercase;
+}
+
+.entropy-stat-val {
+  font-size: 0.8em;
+  color: var(--phosphor-green);
+  letter-spacing: 0.06em;
+}
+
+/* -- Hex dump area -- */
+.entropy-hex-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.entropy-hex-label {
+  font-size: 0.58em;
+  letter-spacing: 0.1em;
+  color: var(--phosphor-green-dim);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-dim);
+  padding-bottom: 0.3rem;
+}
+
+.entropy-hex-dump {
+  font-family: var(--font-mono);
+  font-size: 0.6em;
+  line-height: 1.6;
+  color: var(--phosphor-green);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-dim);
+  padding: 0.6rem 0.8rem;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 260px;
+  white-space: pre;
+  letter-spacing: 0.04em;
+}
+
+.entropy-trunc {
+  font-size: 0.58em;
+  letter-spacing: 0.1em;
+  color: var(--phosphor-amber);
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+.entropy-footer-note {
+  font-size: 0.6em;
+  letter-spacing: 0.08em;
+  color: var(--phosphor-green-dim);
+  text-transform: uppercase;
+  flex: 1;
+}
+
+#entropyDataDismiss {
+  background: transparent;
+  border: 1px solid var(--border-active);
+  color: var(--phosphor-green);
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.7rem 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  #entropyDataDismiss:hover {
+    background: var(--phosphor-green-glow);
+    box-shadow: 0 0 10px var(--phosphor-green-glow);
+  }
+}
+
+/* -- Theme: orange -- */
+body.theme-orange #entropyDataBtn {
+  border-color: rgba(255, 140, 0, 0.22);
+  color: rgba(255, 140, 0, 0.6);
+}
+
+@media (hover: hover) {
+  body.theme-orange #entropyDataBtn:hover {
+    border-color: var(--phosphor-amber);
+    color: var(--phosphor-amber);
+    box-shadow: 0 0 6px rgba(255, 179, 0, 0.35);
+  }
+}
+
+/* -- Theme: pony -- */
+body.theme-pony #entropyDataBtn {
+  border-color: rgba(214, 58, 249, 0.22);
+  color: rgba(160, 32, 208, 0.75);
+  background: rgba(255, 255, 255, 0.40);
+}
+
+@media (hover: hover) {
+  body.theme-pony #entropyDataBtn:hover {
+    border-color: rgba(214, 58, 249, 0.65);
+    color: #d63af9;
+    box-shadow: 0 0 8px rgba(214, 58, 249, 0.28);
+    background: rgba(255, 255, 255, 0.60);
   }
 }

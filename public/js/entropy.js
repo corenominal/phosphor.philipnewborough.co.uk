@@ -36,6 +36,12 @@ const poolCountEl     = document.getElementById('poolCount');
 const systemStatus    = document.getElementById('systemStatus');
 const systemClock     = document.getElementById('systemClock');
 
+// [ENTROPY DATA MODAL DOM REFS]
+const entropyDataModal   = document.getElementById('entropyDataModal');
+const entropyDataBtn     = document.getElementById('entropyDataBtn');
+const entropyDataClose   = document.getElementById('entropyDataClose');
+const entropyDataDismiss = document.getElementById('entropyDataDismiss');
+
 // -- [ENTROPY POOL :: THERMAL SAMPLE BUFFER] --
 /** @type {Array<{x: number, y: number, t: number}>} */
 let entropyPool = [];
@@ -429,6 +435,106 @@ function tickSystemClock() {
   systemClock.textContent = `UTC ${h}:${m}:${s}`;
   setTimeout(tickSystemClock, 1000);
 }
+
+// ============================================================
+// SUBSYSTEM: ENTROPY DATA MODAL
+// ============================================================
+
+/**
+ * buildEntropyHexDump — Serialise the entropy pool into a classic hex dump string.
+ * Each sample is encoded as 4 bytes: X_LO, X_HI, Y_LO, Y_HI (uint16 LE per axis).
+ * [POOL SERIALISATION :: VISUAL READOUT]
+ */
+function buildEntropyHexDump() {
+  const BYTES_PER_SAMPLE = 4;
+  const MAX_BYTES        = 512;
+
+  if (entropyPool.length === 0) return '// NO ENTROPY DATA COLLECTED';
+
+  const sampleCount = Math.min(entropyPool.length, Math.floor(MAX_BYTES / BYTES_PER_SAMPLE));
+  const bytes = [];
+
+  for (let i = 0; i < sampleCount; i++) {
+    const s = entropyPool[i];
+    const x = Math.round(s.x) & 0xFFFF;
+    const y = Math.round(s.y) & 0xFFFF;
+    bytes.push(x & 0xFF, (x >> 8) & 0xFF, y & 0xFF, (y >> 8) & 0xFF);
+  }
+
+  const COLS = 16;
+  const lines = [];
+
+  for (let i = 0; i < bytes.length; i += COLS) {
+    const row    = bytes.slice(i, i + COLS);
+    const addr   = i.toString(16).padStart(6, '0').toUpperCase();
+    const hex    = row.map(b => b.toString(16).padStart(2, '0').toUpperCase()).join(' ');
+    const ascii  = row.map(b => (b >= 32 && b < 127) ? String.fromCharCode(b) : '.').join('');
+    const padded = hex.padEnd(COLS * 3 - 1, ' ');
+    lines.push(`${addr}  ${padded}  |${ascii}|`);
+  }
+
+  return lines.join('\n');
+}
+
+/**
+ * openEntropyData — Populate and display the entropy data modal.
+ * [POOL VISUALISATION INTERFACE :: ACTIVATION SEQUENCE]
+ */
+function openEntropyData() {
+  const BYTES_PER_SAMPLE = 4;
+  const MAX_BYTES        = 512;
+  const count = entropyPool.length;
+
+  document.getElementById('entropyDataCount').textContent = count;
+  document.getElementById('entropyDataLevel').textContent = entropyLevel + '%';
+  document.getElementById('entropyDataBytes').textContent = count * BYTES_PER_SAMPLE;
+
+  if (count >= 2) {
+    const spanMs = entropyPool[count - 1].t - entropyPool[0].t;
+    document.getElementById('entropyDataSpan').textContent = (spanMs / 1000).toFixed(1) + 's';
+  } else {
+    document.getElementById('entropyDataSpan').textContent = '--';
+  }
+
+  document.getElementById('entropyHexDump').textContent = buildEntropyHexDump();
+
+  const truncEl = document.getElementById('entropyDataTrunc');
+  const maxSamples = Math.floor(MAX_BYTES / BYTES_PER_SAMPLE);
+  if (count > maxSamples) {
+    truncEl.textContent = `// SHOWING FIRST ${MAX_BYTES} OF ${count * BYTES_PER_SAMPLE} BYTES`;
+    truncEl.hidden = false;
+  } else {
+    truncEl.hidden = true;
+  }
+
+  entropyDataModal.classList.add('is-open');
+  entropyDataDismiss.focus();
+}
+
+/**
+ * closeEntropyData — Dismiss the entropy data modal.
+ * [POOL VISUALISATION INTERFACE :: STANDBY]
+ */
+function closeEntropyData() {
+  entropyDataModal.classList.remove('is-open');
+  entropyDataBtn.focus();
+}
+
+entropyDataBtn.addEventListener('click', openEntropyData);
+entropyDataClose.addEventListener('click', closeEntropyData);
+entropyDataDismiss.addEventListener('click', closeEntropyData);
+
+// [BACKDROP CLICK TO CLOSE]
+entropyDataModal.addEventListener('click', (e) => {
+  if (e.target === entropyDataModal) closeEntropyData();
+});
+
+// [ESCAPE KEY TO CLOSE]
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && entropyDataModal.classList.contains('is-open')) {
+    closeEntropyData();
+  }
+});
 
 // ============================================================
 // SYSTEM INIT

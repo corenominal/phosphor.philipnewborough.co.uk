@@ -29,7 +29,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/png" />
-    <link rel="stylesheet" href="css/style.css?v=1775719235703" />
+    <link rel="stylesheet" href="css/style.css?v=1775720904572" />
 </head>
 <body>
 
@@ -76,6 +76,7 @@
     <footer id="systemFooter">
       <span class="sys-label">SAMPLES:<span id="poolCount">0</span></span>
       <span class="sys-label">STATUS: <span id="systemStatus" class="status-ok">NOMINAL</span></span>
+      <button id="entropyDataBtn" aria-label="View entropy pool data">[ENTROPY DATA]</button>
     </footer>
 
   </div>
@@ -254,10 +255,52 @@
     </div>
   </div>
 
+  <!-- [ENTROPY DATA MODAL :: POOL VISUALISATION INTERFACE] -->
+  <div id="entropyDataModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="entropyDataTitle">
+    <div class="modal-panel modal-panel--entropy">
+      <header class="modal-header">
+        <span id="entropyDataTitle" class="modal-title">ENTROPY POOL // RAW DATA</span>
+        <button id="entropyDataClose" class="modal-close" aria-label="Close entropy data">&times;</button>
+      </header>
+      <div class="modal-body entropy-modal-body">
+
+        <div class="entropy-stats-grid">
+          <div class="entropy-stat">
+            <span class="entropy-stat-key">SAMPLES</span>
+            <span class="entropy-stat-val" id="entropyDataCount">0</span>
+          </div>
+          <div class="entropy-stat">
+            <span class="entropy-stat-key">SATURATION</span>
+            <span class="entropy-stat-val" id="entropyDataLevel">0%</span>
+          </div>
+          <div class="entropy-stat">
+            <span class="entropy-stat-key">TIME SPAN</span>
+            <span class="entropy-stat-val" id="entropyDataSpan">--</span>
+          </div>
+          <div class="entropy-stat">
+            <span class="entropy-stat-key">POOL BYTES</span>
+            <span class="entropy-stat-val" id="entropyDataBytes">0</span>
+          </div>
+        </div>
+
+        <div class="entropy-hex-wrap">
+          <div class="entropy-hex-label">// SERIALISED POOL &mdash; [X_LO X_HI Y_LO Y_HI] PER SAMPLE</div>
+          <pre id="entropyHexDump" class="entropy-hex-dump">// NO DATA</pre>
+          <p id="entropyDataTrunc" class="entropy-trunc" hidden></p>
+        </div>
+
+      </div>
+      <footer class="modal-footer">
+        <span class="entropy-footer-note">// DATA IS NOT TRANSMITTED OR STORED OUTSIDE YOUR BROWSER</span>
+        <button id="entropyDataDismiss">CLOSE</button>
+      </footer>
+    </div>
+  </div>
+
   <!-- [MODULE LOAD SEQUENCE] -->
-  <script src="js/settings.js?v=1775719235703"></script>
-  <script src="js/crypto.js?v=1775719235703"></script>
-  <script src="js/entropy.js?v=1775719235703"></script>
+  <script src="js/settings.js?v=1775720904572"></script>
+  <script src="js/crypto.js?v=1775720904572"></script>
+  <script src="js/entropy.js?v=1775720904572"></script>
   <script src="js/metrics.js?v=1775317593465"></script>
   <!-- Service Worker registration -->
   <script>
